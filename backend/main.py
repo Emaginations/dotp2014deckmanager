@@ -36,7 +36,7 @@ from log import get_logger, logfile
 
 log = get_logger("main")
 
-TITLE = "万智牌 2014 卡组编辑器"
+TITLE = "万智牌 2014 卡组管理器"
 
 
 def free_port():
@@ -83,7 +83,12 @@ def ensure_indexes(force=False):
         print("需要重建的索引：%s" % ("、".join(stale) if stale else "全部（--force）"))
         rebuild.ensure_all(force=force, verbose=True)
         return True
-    except Exception as e:
+    # ⚠️ **必须显式带上 `SystemExit`**。`tools/*.py` 里报错用的是
+    # `raise SystemExit("打不开 xxx —— 游戏目录对吗？")`，而 SystemExit 继承自
+    # **BaseException**，`except Exception` 兜不住 —— 它会一路穿透 main()，
+    # 把整个进程带走。表现是「双击 exe 没反应」，日志里才有堆栈。
+    # （真踩过：目录里有个坏掉的 DATA_CORE.WAD，程序静默退出。）
+    except (Exception, SystemExit) as e:
         # 建索引失败也不拦着开窗口 —— 用户还能进「设置」换目录 / 看日志。
         log.error("建索引失败：%s: %s", type(e).__name__, e, exc_info=True)
         print("\n!! 建索引失败：%s\n   界面照常打开，可在「设置」里换游戏目录或看日志。\n" % e)

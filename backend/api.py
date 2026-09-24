@@ -31,7 +31,7 @@ from log import get_logger, recent, logfile
 
 log = get_logger("api")
 
-app = FastAPI(title="DotP 2014 卡组编辑器", docs_url="/api/docs")
+app = FastAPI(title="DotP 2014 卡组管理器", docs_url="/api/docs")
 
 _cardset = None
 _artcache = None
@@ -96,7 +96,10 @@ def api(fn):
         try:
             data = fn(*a, **kw)
             out = {"ok": True, "data": data}
-        except Exception as e:
+        # `SystemExit` 也要接住 —— `tools/*.py` 用 `raise SystemExit("...")` 报错，
+        # 而它继承自 **BaseException**。`/api/reindex` 直接调 `rebuild.ensure_all`，
+        # 目录里有坏包时那个 SystemExit 会穿透这里，把请求线程带走。
+        except (Exception, SystemExit) as e:
             log.warning("%s 出错：%s: %s", fn.__name__, type(e).__name__, e,
                         exc_info=True)
             out = _err_payload(e, fn.__name__)

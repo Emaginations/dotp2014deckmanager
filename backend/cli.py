@@ -334,7 +334,7 @@ def cmd_doctor(a):
 
 def build_parser():
     p = argparse.ArgumentParser(
-        prog="cli", description="万智牌 2014 卡组编辑器 · 命令行",
+        prog="cli", description="万智牌 2014 卡组管理器 · 命令行",
         formatter_class=argparse.RawDescriptionHelpFormatter, epilog=__doc__)
     p.add_argument("--json", action="store_true", help="输出 JSON（默认给人类看的）")
     sub = p.add_subparsers(dest="cmd", required=True)

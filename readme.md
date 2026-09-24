@@ -12,15 +12,21 @@
 
 ### 方式一：下载现成的 exe（推荐）
 
-去 [Releases](https://github.com/Emaginations/dotp2014deckmanager/releases) 下载
-`dotp2014deckmanager.exe`，**放到任意一个文件夹里双击**即可，免安装。
+1. 去 [Releases](https://github.com/Emaginations/dotp2014deckmanager/releases)
+   下载 `dotp2014deckmanager.exe`
+2. **把它放进《Magic 2014》的安装目录**（和 `DATA_CORE.WAD` 并排的那一层）
+3. 双击
 
-首次启动会**静默约 40 秒**（在扫你的游戏目录、建索引），之后启动就很快了。
-索引、缩略图缓存、你的卡组工程都会放在 **exe 旁边**，所以别把它塞进
-`C:\Program Files`（那里不可写）。
+就这三步。程序**自己就认得出游戏目录** —— 它就在那儿，旁边就是 `DATA_CORE.WAD`，
+不需要你去设置里指一遍。
 
-**第一次用要先指游戏目录**：点右上角 ⚙ **设置** → 选《Magic 2014》的安装目录
-（里面应该有 `DATA_CORE.WAD`）→ 点「重建索引」。
+**为什么必须放游戏目录**：它读卡图、卡框、牌盒贴图全是从同目录的 WAD 里取的，
+而且「保存到游戏」要写回那些 WAD。放在别处就得手动指路，还容易写错。
+
+> [!NOTE] 首次启动会**静默约 40 秒**
+> 那 40 秒在扫 WAD、导出 162 个卡框、建 6 个索引。只做一次，
+> 之后启动就是两三秒。索引和缩略图缓存（约 200MB）会放在 exe 旁边，
+> 不想要了整个删掉即可 —— 下次启动会重建。
 
 ### 方式二：从源码跑
 
@@ -28,8 +34,10 @@
 pip install pywebview fastapi uvicorn pillow numpy pypinyin
 cd frontend && npm install && npm run build && cd ..
 python backend/main.py            # 开窗口
-python backend/main.py --browser  # 只起服务，自己开浏览器（调前端方便）
 ```
+
+源码模式下**不会**自动认游戏目录（项目目录旁边当然没有 WAD），
+首次启动点右上角 ⚙ **设置** → 选《Magic 2014》的安装目录 → 重建索引。
 
 打包成单文件 exe：
 
@@ -557,6 +565,12 @@ dotp2014deckmanager/
 ├── projects/            卡组工程（一个卡组一个 .json）
 └── out/                 打包产物（也会直接装进游戏目录）
 ```
+
+> [!IMPORTANT] `data/` `projects/` `out/` 这三个**可写目录的位置取决于怎么跑**
+> - 源码模式：就在上面这个位置（项目根下）
+> - exe：在 **exe 旁边**（也就是游戏目录里）—— `sys._MEIPASS` 是只读的临时
+>   解包目录，进程一退就没了，157MB 缩略图放那儿每次启动都得重解。
+>   见 `backend/paths.py` 里 `BUNDLE`（只读资源）和 `ROOT`（可写数据）的区分。
 
 ---
 

@@ -23,8 +23,8 @@ import time
 
 import paths
 
-# 空 = 还没配。首次启动由用户在「设置」里选，**不要**写死开发机的路径 ——
-# 开源出去别人跑不了，而且把本机目录结构泄了个干净。
+# 空 = 还没配。**不要**写死开发机的路径 —— 开源出去别人跑不了，
+# 而且把本机目录结构泄了个干净。
 DEFAULT_GAME = ""
 
 DEFAULTS = {
@@ -35,6 +35,25 @@ DEFAULTS = {
 }
 
 _cache = None
+
+
+def autodetect():
+    """程序**就放在游戏目录里**的话，直接认出来 —— 返回目录，认不出返回 ""。
+
+    这个程序的设计用法是把 exe 丢进《Magic 2014》的安装目录。既然它就在那儿，
+    再让用户去「设置」里手动指一遍自己所在的目录，纯属多余 ——
+    而且新用户第一次打开看到的是「卡池索引不存在」那种报错，很容易以为坏了。
+
+    判据是**同级有 `DATA_CORE.WAD`** —— 那是游戏的卡框/符号素材包，
+    任何一份完整安装都有，而别的目录基本不会有。
+    """
+    d = paths.ROOT
+    try:
+        if os.path.isfile(os.path.join(d, paths.CORE_WAD_NAME)):
+            return d
+    except OSError:
+        pass
+    return ""
 
 
 def load(force=False):
@@ -49,6 +68,12 @@ def load(force=False):
                 d.update(json.load(f))
         except Exception:
             pass                                  # 坏了就退回默认，别让程序起不来
+    # 配置里**没写**目录才自动认。用户手填过的（哪怕现在盘没插、目录暂时不在）
+    # 一律不动 —— 否则「U 盘没插」会变成「设置被悄悄改掉了」。
+    if not (d.get("game_dir") or "").strip():
+        auto = autodetect()
+        if auto:
+            d["game_dir"] = auto
     _cache = d
     # `paths.GAME` 是模块级变量，`packer` / `wadlite` 直接读它。
     # **读也要同步** —— 早先只在 `save()` 里同步，于是「配置文件里已经有目录、

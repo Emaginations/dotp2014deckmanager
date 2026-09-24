@@ -559,7 +559,7 @@ export default function App() {
         <div className="flex items-center gap-2">
           <span className="text-lg">🃏</span>
           <span className="text-sm font-semibold tracking-wide">
-            万智牌 2014 卡组编辑器
+            万智牌 2014 卡组管理器
           </span>
         </div>
 

@@ -112,7 +112,11 @@ class CardSet(object):
             # `BaseException`，`@api` / `guard` 只兜 `Exception`，会直接穿透
             # 把服务打死。打成 exe 后首次启动还没建索引，用户看到的就是
             # 「窗口开了但一片空白且服务已死」。现在会正常返回 ok:false。
-            raise RuntimeError("卡池索引不存在，先跑 tools/rebuild.py")
+            # 面向用户的话，不要写「先跑 tools/rebuild.py」——
+            # 用 exe 的人根本不知道 tools 是什么。
+            raise RuntimeError(
+                "卡池索引还没建好。请把程序放进《Magic 2014》的安装目录后重启，"
+                "或在右上角「设置」里选游戏目录、点「重建索引」。")
         with open(paths.POOL_JSON, encoding="utf-8") as f:
             self.cards = json.load(f)["cards"]
 
