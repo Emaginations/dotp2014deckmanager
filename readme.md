@@ -47,7 +47,7 @@ python build_exe.py               # 会先 npm run build 再 PyInstaller
 ## 界面
 
 ```
-[Snipaste_2026-09-25_05-28-34.png]
+![界面](Snipaste_2026-09-25_05-28-34.png)
 
 ```
 支持拖拽删减、添加卡牌，
