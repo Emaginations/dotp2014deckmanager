@@ -32,7 +32,7 @@ python build_exe.py               # 会先 npm run build 再 PyInstaller
 
 ### 环境要求
 
-- Windows（pywebview 走系统自带的 **WebView2**，Win10/11 一般都有）
+- ⚠️ **系统必须高于 Windows 10**（界面依赖系统自带的 WebView2 运行时）
 - 可选：社区卡包 [Community Wad](https://www.dropbox.com/sh/...)（卡池从 1 万张涨到 2 万多张）
 ---
 
