@@ -47,7 +47,7 @@ python build_exe.py               # 会先 npm run build 再 PyInstaller
 ## 界面
 
 ```
-<img width="1782" height="1103" alt="图片" src="https://github.com/user-attachments/assets/01b140b9-dddf-4b62-805e-22223e570093" />
+<img width="1782" height="1103" alt="图片" src="https://github.com/user-attachments/assets/020c18a0-cfe7-4d00-a3e3-380f5c135fa1" />
 
 ```
 支持拖拽删减、添加卡牌，
