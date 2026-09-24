@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   设计 token（Tailwind v4 的 @theme 语法，不需要 tailwind.config.js）
+
+   ⚠️ @theme 是**按名覆盖** Tailwind 默认值的。所以语义名要刻意避开
+   --radius-sm/md/lg、--ease-out、--font-sans 这些已经被大量使用的基础名，
+   改用 card/panel/row 这种角色名（这是 phase 项目踩过的坑）。
+--------------------------------------------------------------------------- */
+@theme {
+  /* 强调色：暖金 —— 万智牌的经典配色 */
+  --color-ember: #f0a726;
+  --color-ember-bright: #ffc857;
+  --color-ember-dim: #8a5f18;
+
+  /* 前景阶梯 */
+  --color-fg: #f2f4f8;
+  --color-fg-muted: #9aa4b8;
+  --color-fg-dim: #5d687e;
+  --color-fg-faint: #39414f;
+
+  /* 发丝边框 */
+  --color-hairline: rgba(255, 255, 255, 0.10);
+  --color-hairline-hover: rgba(255, 255, 255, 0.20);
+
+  /* 玻璃面板 */
+  --color-panel: rgba(18, 22, 32, 0.72);
+  --color-panel-solid: #12161f;
+  --color-raised: rgba(38, 44, 58, 0.85);
+
+  /* 五色（万智牌 WUBRG，用于筛选按钮和色组条） */
+  --color-mtg-w: #f4efd8;
+  --color-mtg-u: #a5d3f0;
+  --color-mtg-b: #b3a8b8;
+  --color-mtg-r: #f0a08a;
+  --color-mtg-g: #9ed3a8;
+
+  /* 稀有度 */
+  --color-rarity-c: #c9cdd4;
+  --color-rarity-u: #9fc4e8;
+  --color-rarity-r: #f0d18a;
+  --color-rarity-m: #f0a04b;
+  --color-rarity-s: #c99ef0;
+  --color-rarity-t: #8fb8a0;
+
+  /* 角色化圆角（避开 --radius-sm/md/lg） */
+  --radius-tile: 8px;
+  --radius-panel: 12px;
+  --radius-chip: 999px;
+
+  /* 阴影 */
+  --shadow-panel: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --shadow-tile: 0 4px 14px rgba(0, 0, 0, 0.4);
+
+  /* 弹簧曲线 —— 名字避开内置的 ease-out */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --font-sans: "Inter", "Segoe UI", "Microsoft YaHei", "PingFang SC",
+    "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-card: "Noto Serif", "Songti SC", "SimSun", Georgia, serif;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(240, 167, 38, 0.10), transparent 70%),
+    linear-gradient(180deg, #0a0e16 0%, #0b0f18 40%, #06080d 100%);
+  background-attachment: fixed;
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  overflow: hidden;              /* 整页不滚，滚动交给各面板 */
+  user-select: none;
+}
+
+/* 细滚动条 */
+.thin-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.thin-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.thin-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.24);
+  background-clip: content-box;
+}
+
+/* 卡面文字要被选中（用户可能想复制规则文本） */
+.card-face {
+  user-select: text;
+}
+
+/* 输入框统一暗色 */
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+input[type="range"] {
+  accent-color: var(--color-ember);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
